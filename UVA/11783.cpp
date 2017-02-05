@@ -31,12 +31,9 @@ int n, m;
 struct point{
 	ll x, y;
 };
-
 ll side(point a ,point b, point c) {
 	return ((a.y - b.y)*(c.x - b.x) - (a.x - b.x)*(c.y - b.y));
 }
-
-
 
 int main()
 {

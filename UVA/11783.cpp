@@ -31,8 +31,18 @@ int n, m;
 struct point{
 	ll x, y;
 };
+
 ll side(point a ,point b, point c) {
 	return ((a.y - b.y)*(c.x - b.x) - (a.x - b.x)*(c.y - b.y));
+}
+
+bool IsIntersect(point a, point b, point c, point d){
+	ll a1 = side(c, a, b);
+	ll a2 = side(d, a, b);
+	ll a3 = side(a, c, d);
+	ll a4 = side(b, c, d);
+	if (a1 * a2 <= 0 && a3 * a4 <= 0) return 1;
+	return 0;
 }
 
 int main()
@@ -49,11 +59,7 @@ int main()
 		ll ans = 0;
 		for (int i = 0; i < n; i++){
 			for (int j = i + 1; j < n; j++){
-				ll a1 = side( a[j], a[i], b[i]);
-				ll a2 = side( b[j], a[i], b[i]);
-				ll a3 = side( a[i], a[j], b[j]);
-				ll a4 = side( b[i], a[j], b[j]);
-				if (a1 * a2 <= 0 && a3 * a4 <= 0) {
+				if (IsIntersect(a[i],b[i],a[j],b[j])) {
 					ans++;
 					vs[i] = vs[j] = 1;
 				}

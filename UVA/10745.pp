@@ -70,5 +70,5 @@ int main()
 	sort(all(ans));
 	for (auto it : ans)
 		cout << it << endl;
-	return 0;
+	return  0;
 }

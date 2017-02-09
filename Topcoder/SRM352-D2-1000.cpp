@@ -66,6 +66,6 @@ public:
 		double r = res;
 		if (l >= minimumMoney && r >= minimumMoney) return -2;
 		if (rs < 0) return -1.0;
-		return rs + 1e-8;
+		return rs + 1e-9;
 	}
 };

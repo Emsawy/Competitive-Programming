@@ -8,7 +8,9 @@
 using namespace std;
 #define V vector
 typedef long long ll;
-
+/*
+- i get the edges which will make the MST
+*/
 int n, m, k;
 struct point{
 	int x, y , node;

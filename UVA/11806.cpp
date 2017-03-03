@@ -10,6 +10,9 @@ void Emsawy(){
 	freopen("output.txt", "w", stdout);
 #endif
 }
+/*
+- I get the valid combinations on the bounderies * combinations of the internal under the given constraines  
+*/
 
 #define sz(v) ((int)((v).size()))
 #define V vector

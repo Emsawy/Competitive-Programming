@@ -5,8 +5,8 @@
 
 /*
 - get the MST
-- for each qary if the i-th edges i used before , then the answer i summations of MST edges.
-- else if the i-th edges i didn't used befor i get the lca and find the minimum edges in the cycle and substract it from MST summations and add the new one 
+- for each qary if the i-th edges i used before , then the answer is the summations of MST edges.
+- else if the i-th edges didn't used befor i get the lca and find the minimum edges in the cycle and substract it from MST summations and add the new one 
 */
 
 using namespace std;

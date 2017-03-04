@@ -102,7 +102,21 @@ int main()
 		cur++;
 		a = tree1(0);
 		cur++;
-		b = tree2(0);		
+		b = tree2(0);
+		/*bool ok = 1;
+		for (int i = 0; i <= node1 && ok; i++){
+			for (int j = i + 1; j <= node2 && ok; j++){
+				if (adj1[i].size() != 1 || adj2[i].size() != 1 || adj1[i].size() != adj2[j].size()) continue;
+				cur++;
+				a = tree1(i);
+				cur++;
+				b = tree2(j);
+				if (a == b){
+					ok = 0;
+					break;
+				}
+			}
+		}*/
 		if (a != b) puts("different");
 		else puts("same");
 		adj1.clear();

@@ -1,3 +1,6 @@
+/*
+- Just implement it.
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

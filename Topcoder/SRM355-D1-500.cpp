@@ -34,12 +34,6 @@ public:
 		return 0;
 	}
 	string exists(vector <string> d) {
-		vector<pair<int, int> > po;
-		for (int i = 0; i < 10; i++){
-			for (int j = 0; j < 10; j++){
-				po.push_back({ i, j });
-			}
-		}
 		int t;
 		vector<vector<int> > v(4);
 		for (int i = 0; i < d.size(); i++){
@@ -53,7 +47,7 @@ public:
 		int BC = v[1][2];
 		int BD = v[1][3];
 		int CD = v[2][3];
-		
+
 		double A1 = ((AC * AC) + (AB * AB) - (BC * BC)) / (2.0 * AC * AB);
 		double X1 = AC * A1;
 		double Y1 = sqrt(AC * AC - X1 * X1);
@@ -61,7 +55,7 @@ public:
 		double A2 = ((AD * AD) + (AB * AB) - (BD * BD)) / (2.0 * AD * AB);
 		double X2 = AD * A2;
 		double Y2 = sqrt(AD * AD - X2 * X2);
-		
+
 		double mn = dis(X1, Y1, X2, Y2);
 		double mx = dis(X1, Y1, X2, -Y2);
 

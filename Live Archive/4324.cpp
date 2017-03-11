@@ -1,3 +1,10 @@
+
+/*
+-I get all the top windows and compare if one of them has a nested windows or not.
+-If has nested windows i don't consider it.
+*/
+
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

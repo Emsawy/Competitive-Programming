@@ -48,11 +48,13 @@ public:
 		int BD = v[1][3];
 		int CD = v[2][3];
 
-		double A1 = ((AC * AC) + (AB * AB) - (BC * BC)) / (2.0 * AC * AB);
+		// point p2
+		double A1 = ((AC * AC) + (AB * AB) - (BC * BC)) / (2.0 * AC * AB);  // Cos(theta) between AC and AB
 		double X1 = AC * A1;
 		double Y1 = sqrt(AC * AC - X1 * X1);
 
-		double A2 = ((AD * AD) + (AB * AB) - (BD * BD)) / (2.0 * AD * AB);
+		// point p3
+		double A2 = ((AD * AD) + (AB * AB) - (BD * BD)) / (2.0 * AD * AB); // Cos(theta) between AD and AB
 		double X2 = AD * A2;
 		double Y2 = sqrt(AD * AD - X2 * X2);
 

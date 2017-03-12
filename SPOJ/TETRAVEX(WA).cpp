@@ -30,6 +30,7 @@ void Emsawy(){
 #define rotate0(p,ang)	((p)*exp(Point(0,ang)))
 #define rotateA(p,ang,A)(rotate0(vec(A,p),ang)+A)
 #define reflect0(v,m)	(conj((v)/(m))*(m))
+#define DEBUG	system("Puase")
 #define pii		pair<int,int>
 #define V		vector
 #define MP		make_pair
@@ -50,7 +51,10 @@ int main()
 {
 	Emsawy();
 	int c = 1;
-	while (cin >> n){
+	int t;
+	cin >> t;
+	while (t--){
+		if (c > 1)puts("");
 		V<tile>v(9);
 		for (int i = 0; i < 9; i++){
 			cin >> v[i].first.first >> v[i].first.second >> v[i].second.first >> v[i].second.second;
@@ -80,6 +84,7 @@ int main()
 			if (g[1][0].second.first != g[2][0].first.first) ret = 0;
 			if (g[1][1].second.first != g[2][1].first.first) ret = 0;
 			if (g[1][2].second.first != g[2][2].first.first) ret = 0;
+
 			if (ret == 1){
 				ok = 1;
 				break;

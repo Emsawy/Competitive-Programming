@@ -89,7 +89,7 @@ public:
 	}
 	bool ispointOnRay(point a, point b, point c){
 		if (!isCollinear(a, b, c)) return 0;
-		return (dcmp(dp(b - a, c - a), 0.0) == 0) || (dcmp(dp(b - a, c - a), 0.0) == 1);
+		return (dcmp(dp(b - a, c - a), 0.0) == 0) || (dcmp(dp(b - a, c - a), 0.0) == 1);  // additional cases.
 	}
 	bool ispointOnSegment(point a, point b, point c){
 		return ispointOnRay(a, b, c) && ispointOnRay(b, a, c);

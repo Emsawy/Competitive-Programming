@@ -47,98 +47,94 @@ const ll mod = ll(1e9 + 7), oo = ll(1e9);
 
 V<V<pii> > adj;
 int n, m, k, t, c;
-
-const int ND = 100000, ED = 100000;
-int to[ED], cost[ED], cap[ED], last[ND], nxt[ED], prv[ND], pot[ED], dist[ND], E = 0, N = 0, minCost = 0, maxFlow = 0;
-void init(int Nodes){
-	for (int i = 0; i < ND; i++)
-		last[i] = -1, pot[i] = cost[i] = nxt[i] = cap[i] = cost[i] = to[i] = pot[i] = to[i] =0;  // clr
-	maxFlow = minCost = E = 0;
-	N = Nodes;
-}
-void addEdge(int u, int v, int cp, int w){
-	to[E] = v, cap[E] = cp, cost[E] = w, nxt[E] = last[u], last[u] = E++;
-	to[E] = u, cap[E] = 0, cost[E] = -w, nxt[E] = last[v], last[v] = E++;
-}
-
-int MCMF0(int src, int dest){
-	while (true){
-		for (int i = 0; i < ND; i++) prv[i] = -1; // clr
-		for (int i = 0; i <= N; i++) dist[i] = -oo;
-		dist[src] = prv[src] = 0;
-		priority_queue<pair<int, int> > pq;
-		pq.push(MP(0, src));
-		while (!pq.empty()){
-			pair<int, int> p = pq.top();
-			pq.pop();
-			for (int e = last[p.second]; e != -1; e = nxt[e]){
-				int now = dist[p.second] + cost[e] + pot[p.second] - pot[to[e]];
-				if (dist[to[e]] >= now || cap[e] <= 0) continue;
-				dist[to[e]] = now;
-				prv[to[e]] = e;
-				pq.push(MP(now, to[e]));
+struct edge {
+	int from, to, w;
+	edge(int from, int to, int w) : from(from), to(to), w(w) {}
+	bool operator < (const edge & e) const {
+		w > e.w;
+	}
+};
+// O(NM)
+const int si = 1005;
+bool reachCycle[si];
+int prv[si], pos[si], dist[si][2], cost[si][si], cap[si][si], minCost, maxFlow;
+bool BMF(int n, bool po , V<edge> & edges){
+	if (sz(edges) == 0) return 0;
+	for (int i = 0, r = 0; i < n + 1; i++, r = 0){
+		for (int j = 0; j < sz(edges); j++){
+			edge ne = edges[j];
+			if (dist[ne.from][po] >= oo || ne.w == oo) continue;
+			if (dist[ne.to][po] > dist[ne.from][po] + ne.w){
+				dist[ne.to][po] = dist[ne.from][po] + ne.w;
+				prv[ne.to] = ne.from, pos[ne.to] = j, r++;
+				if (i == n) return 1;
 			}
 		}
-		if (prv[dest] == -1) break;
-		int f = cap[prv[dest]];
-		for (int i = dest; i != src; i = to[prv[i] ^ 1]) f = min(f, cap[prv[i]]);
-		for (int i = dest; i != src; i = to[prv[i] ^ 1]){
-			cap[prv[i]] -= f;
-			cap[prv[i] ^ 1] += f;
-		}
-		maxFlow += f;
-		minCost += f*(dist[dest] - pot[src] + pot[dest]);
-		for (int i = 1; i <= N; ++i) if (prv[i] != -1) pot[i] += dist[i];
+		if (!r) break;
 	}
-	return minCost;
+	return 0;
 }
-
-int MCMF1(int src, int dest){
+pair<int, bool> build(int n, int src, int dest , V<edge> & edges){
+	for (int i = 0; i < si; i++)
+		dist[i][0] = dist[i][1] = oo, prv[i] = -1, pos[i] = 0;
+	
+	dist[src][0] = 0;
+	bool cycle = BMF(n, 0, edges);
+	if (cycle) {
+		BMF(n, 1, edges);
+		for (int i = 1; i <= n; ++i)	// find all nodes that AFFECTED by negative cycle
+			reachCycle[i] = (dist[i][0] != dist[i][1]);
+	}
+	return MP(dist[dest][0], cycle);
+}
+void mcmf(int src, int dest ){
+	clr(prv, -1); minCost = 0;
+	clr(dist, 0); maxFlow = 0;
 	while (true){
-		for (int i = 0; i < ND; i++) prv[i] = -1; // clr
-		for (int i = 0; i <= N; i++) dist[i] = oo;
-		dist[src] = prv[src] = 0;
-		priority_queue<pair<int, int>, V<pair<int, int> >, greater<pair<int, int> > > pq;
-		pq.push(MP(0, src));
-		while (!pq.empty()){
-			pair<int, int> p = pq.top();
-			pq.pop();
-			for (int e = last[p.second]; e != -1; e = nxt[e]){
-				int now = dist[p.second] + cost[e] + pot[p.second] - pot[to[e]];
-				if (dist[to[e]] <= now || cap[e] <= 0) continue;
-				dist[to[e]] = now;
-				prv[to[e]] = e;
-				pq.push(MP(now, to[e]));
-			}
+		V<edge>edges;
+		for (int i = 1; i <= (n+m+1)*2; i++)
+			for (int j = 1; j <= (m+n+1)*2; j++)
+				if (cap[i][j] > 0)
+					edges.push_back(edge(i, j, cost[i][j]));
+
+		pair<int, bool> ret = build(edges.size(), src, dest, edges);
+		if (dist[dest][0] >= oo) break;
+		int bottleNeck = oo;
+		for (int i = dest; prv[i] > -1; i = prv[i]){
+			int l = prv[i], r = i;
+			bottleNeck = min(bottleNeck, cap[l][r]);
 		}
-		if (prv[dest] == -1) break;
-		int f = cap[prv[dest]];
-		for (int i = dest; i != src; i = to[prv[i] ^ 1]) f = min(f, cap[prv[i]]);
-		for (int i = dest; i != src; i = to[prv[i] ^ 1]){
-			cap[prv[i]] -= f;
-			cap[prv[i] ^ 1] += f;
+		for (int i = dest; prv[i] > -1; i = prv[i]){
+			int l = prv[i], r = i;
+			minCost += bottleNeck * cost[l][r];
+			cap[l][r] -= bottleNeck, cap[r][l] += bottleNeck;
 		}
-		maxFlow += f;
-		minCost += f*(dist[dest] - pot[src] + pot[dest]);
-		for (int i = 1; i <= N; ++i) if (prv[i] != -1) pot[i] += dist[i];
+		maxFlow += bottleNeck;
 	}
-	return minCost;
+	clr(cost, 0);
+	clr(cap, 0);
 }
-void inputs(V<int>&pie, V<int>&ice, V<V<int> >&inp){
-	init((n + m + 1) * 2);
+void repeat(V<V<double> >&inp,V<int>&pie , V<int>&ice , bool pr = 1){
 	for (int i = 1; i <= n; i++){
 		for (int j = 1; j <= m; j++){
 			if (inp[i][j] < 0) continue;
-			addEdge(i * 2 + 1, (j + n) * 2, oo, inp[i][j]);
+			cap[i * 2 + 1][(j + n) * 2] = oo;
+			cost[i * 2 + 1][(j + n) * 2] = (pr ? 1 : -1) * inp[i][j];
+			cost[(j + n) * 2][i * 2 + 1] = (!pr ? 1 : -1) * inp[i][j];
 		}
 	}
 	for (int i = 1; i <= n; i++){
-		addEdge(i * 2, i * 2 + 1, pie[i], 0);
-		addEdge(1, i * 2, oo, 0);
+		cap[i * 2][i * 2 + 1] = pie[i];
+		cost[i * 2][i * 2 + 1] = 0;
+		cap[1][i * 2] = oo;
+		cost[1][i * 2] = 0;
 	}
+
 	for (int i = 1; i <= m; i++){
-		addEdge((i + n) * 2, (i + n) * 2 + 1, ice[i], 0);
-		addEdge((i + n) * 2 + 1, (n + m + 1) * 2, oo, 0);
+		cap[(i + n) * 2][(i + n) * 2 + 1] = ice[i];
+		cost[(i + n) * 2][(i + n) * 2 + 1] = 0;
+		cap[(i + n) * 2 + 1][(n + m + 1) * 2] = ice[i];
+		cost[(i + n) * 2 + 1][(n + m + 1) * 2] = 0;
 	}
 }
 int main()
@@ -149,23 +145,22 @@ int main()
 		V<int>pie(n+1) , ice(m+1);
 		for (int i = 1; i <= n; i++) cin >> pie[i];
 		for (int i = 1; i <= m; i++) cin >> ice[i];
-		double in;
-		V<V<int> > inp(n + 1, V<int>(m + 1));
+
+		V<edge>ed;
+		V<V<double> > inp(n + 1, V<double>(m + 1));
 		for (int i = 1; i <= n; i++){
 			for (int j = 1; j <= m; j++){
-				cin>> in;
-				inp[i][j] = in * 100;
+				cin >> inp[i][j];
+				inp[i][j] *= 100;
 			}
 		}
-
-		inputs(pie, ice, inp);
-		int mn = MCMF1(1, (n + m + 1) * 2);
-
-		inputs(pie, ice, inp);
-		int mx = MCMF0(1, (n + m + 1) * 2); 
-
-		printf("Problem %d: %.2f to %.2f\n", ++c, mn / 100.0, mx / 100.0);
-
+		repeat(inp, pie, ice,1);
+		mcmf(1, (n + m + 1) * 2);
+		int a = abs(minCost);
+		repeat(inp, pie, ice,0);
+		mcmf(1, (n + m + 1) * 2);
+		int b = abs(minCost);
+		printf("Problem %d: %.2f to %.2f\n", ++c, a / 100.0, b / 100.0);
 	}
 	return 0;
 }

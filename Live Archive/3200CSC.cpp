@@ -86,16 +86,16 @@ int main()
 		dfs(src, dist);
 		sort(all(routs));
 		if (routs.size() == 0){
-			printf("Case %d: NO ACCEPTABLE TOURS\n", cs++);
+			printf("Case %d:\n NO ACCEPTABLE TOURS\n", cs++);
 			continue;
 		}
 		printf("Case %d:\n", cs++);
 		for (int i = 0; i < routs.size(); i++){
-			printf("%d:", routs[i].first);
+			printf(" %d:", routs[i].first);
 			for (int j = 0; j < routs[i].second.size(); j++){
 				printf(" %d", routs[i].second[j]);
 			}
-			puts("");
+			puts(" ");
 		}
 	}
 	return 0;

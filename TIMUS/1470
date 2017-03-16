@@ -1,0 +1,116 @@
+/*
+- I used Binary Index Tree with 3D dimension.
+- And geting the answer from the BIT with inclusion and exclusion principle
+*/
+//------------------------------------------------------------------
+#define _CRT_SECURE_NO_WARNINGS
+#include <stdio.h>
+#include <vector>
+#include <list>
+#include <map>
+#include <queue>
+#include <stack>
+#include <bitset>
+#include <iostream>
+#include <math.h>
+#include <string>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
+#include <iomanip>
+#include <algorithm>
+#include <complex>
+#include <set>
+
+using namespace std;
+void Emsawy(){
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+
+#define sz(v)			((int)((v).size()))
+#define all(v)			((v).begin()), ((v).end())
+#define allr(v)			((v).rbegin()), ((v).rend())
+#define clr(v,d)		memset(v, d, sizeof(v))
+#define sf(x)			scanf("%d", &x)
+#define sf2(x,y)		scanf("%d %d", &x, &y)
+#define sf3(x,y,z)		scanf("%d %d %d", &x, &y, &z)
+#define sfll(x)			scanf("%I64d", &x)
+#define sfll2(x,y)		scanf("%I64d %I64d", &x, &y)
+#define sfll3(x,y,z)	scanf("%I64d %I64d %I64d", &x, &y, &z)
+#define angle(a)		(atan2((a).imag(), (a).real()))
+#define vec(a,b)		((b)-(a))
+#define length(a)		(hypot((a).imag(), (a).real()))
+#define dp(a,b)			((conj(a)*(b)).real()) // if zero prep
+#define cp(a,b)			((conj(a)*(b)).imag()) // if zero parl
+#define same(p1,p2)		(dp(vec(p1,p2),vec(p1,p2)) < EPS)
+#define rotate0(p,ang)  ((p)*exp(Point(0,ang)))
+#define rotateA(p,ang,A)(rotate0(vec(A,p),ang)+A)
+#define reflect0(v,m)   (conj((v)/(m))*(m))
+#define pii				pair<int,int>
+#define V				vector
+#define MP				make_pair
+#define X				real()
+#define Y				imag()
+
+typedef complex<double> Point;
+typedef long long ll;
+const double PI = acos(-1.0);
+const double EPS = acos(1e-10);
+const ll mod = ll(1e9 + 7), oo = ll(1e9), si = 200;
+V<V<pii> > adj;
+
+int n, m, k;
+int BIT[si][si][si];
+
+void update(int idx, int idy, int idz, int val){
+	for (int x = idx; x <= n; x += (x & -x))
+		for (int y = idy; y <= n; y += (y & -y))
+			for (int z = idz; z <= n; z += (z & -z))
+				BIT[x][y][z] += val;
+}
+
+int get(int idx, int idy, int idz){
+	int sum = 0;
+	for (int x = idx; x > 0; x -= (x & -x))
+		for (int y = idy; y > 0; y -= (y & -y))
+			for (int z = idz; z > 0; z -= (z & -z))
+				sum += BIT[x][y][z];
+	return sum;
+}
+int main()
+{
+	Emsawy();
+	bool ok = 1;
+	int x, y, z, A, x0, y0, z0;
+	while (sf(n) && ok){
+		while (sf(m) && ok){
+			if (m == 1){
+				sf2(x, y);
+				sf2(z, A);
+				x++, y++, z++;
+				update(x, y, z, A);
+			}
+			else if (m == 2){
+				sf3(x0, y0, z0);
+				sf3(x, y, z);
+				x0++, y0++, z0++, x++, y++, z++;
+				ll ans = 0;
+				ans += get(x, y, z);
+				ans -= get(x0 - 1, y, z);
+				ans -= get(x, y0 - 1, z);
+				ans -= get(x, y, z0 - 1);
+				ans += get(x0 - 1, y0 - 1, z);
+				ans += get(x0 - 1, y, z0 - 1);
+				ans += get(x, y0 - 1, z0 - 1);
+				ans -= get(x0 - 1, y0 - 1, z0 - 1);
+				cout << ans << endl;
+			}
+			else ok = 0;
+		}
+
+	}
+	return 0;
+}

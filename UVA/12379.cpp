@@ -1,3 +1,7 @@
+/*
+- answer is the number of raods - the diamter of the tree.
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>
@@ -43,20 +47,50 @@ typedef long long ll;
 
 const double PI = acos(-1.0);
 const double EPS = 1e-10;
-const ll mod = ll(1e9 + 7), oo = ll(1e9), si = 1000000;
+const ll mod = ll(1e9 + 7), oo = ll(1e9),si = 10000;
 
-V<V<pii> > adj;
-int n, m, k, t, c;
+V<V<int> > adj;
+int n, m, k, t, c, vs[si], cur = 0;
+
+
+pair<int,int> bfs(int st){
+	cur++;
+	queue<pair<int, int> > q;
+	pair<int, int>p;
+	q.push(MP(st, 0));
+	vs[st] = cur;
+	while (!q.empty()){
+		p = q.front();
+		q.pop();
+		for (int i = 0; i < adj[p.first].size(); i++){
+			int child = adj[p.first][i];
+			if (vs[child] == cur) continue;
+			vs[child] = cur;
+			q.push(MP(child, p.second + 1));
+		}
+	}
+	return p;
+}
+
 
 int main()
 {
 	Emsawy();
-	double l, w, h, ang;
-	while (cin >> l >> w >> h >> ang){
-		double vol = l * w * h;
-		double x = sin(ang * PI / 180.0) * l / (sin((90 - ang)*PI / 180.0));
-		vol -= (l * w * x) / 2.0;
-		printf("%0.3f mL\n", vol);
+	cin >> t;
+	while (t--){
+		cin >> n;
+		adj.clear();
+		adj.resize(n);
+		for (int i = 0; i < n; i++){
+			cin >> m;
+			for (int j = 0; j < m; j++){
+				cin >> k;
+				adj[k - 1].push_back(i);
+				adj[i].push_back(k - 1);
+			}
+		}
+		pair<int, int> p = bfs(bfs(0).first);
+		cout << 2 * (n - 1) - p.second << endl;
 	}
 	return 0;
 }

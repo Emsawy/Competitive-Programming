@@ -1,0 +1,116 @@
+
+/*
+- The initial answer is C(n + s - 1 , n - 1) , but what if we violt the range of x_i while geting the combinations ?.
+- I removed the unvalid combination from the initial answer.
+- get the unvalid combinations with enclusion-exclusion principle.
+
+comment by : Amir.bh 
+As you know, The number of solutions to x1 + x2 + ... + xn = k is C(n + k - 1, n - 1).
+And if we have some xi >  = d > 0, we can subtract d from k and the number of solutions is C(n + k - d - 1, n - 1).
+So We use Inclusion-Exclusion Principle Here and a simple iteration over 2n ways of including or excluding number of flowers on each box.
+Excluding means xi > Fi. And there are some hassle of calculating C(n, r) for a big n that can be easily solved using mentioned ways
+:)
+*/
+
+#define _CRT_SECURE_NO_WARNINGS
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+void Emsawy(){
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+
+#define sz(v)			((int)((v).size()))
+#define all(v)			((v).begin()), ((v).end())
+#define allr(v)			((v).rbegin()), ((v).rend())
+#define clr(v,d)		memset(v, d, sizeof(v))
+#define sf(x)			scanf("%d", &x)
+#define sf2(x,y)		scanf("%d %d", &x, &y)
+#define sf3(x,y,z)		scanf("%d %d %d", &x, &y, &z)
+#define sfll(x)			scanf("%I64d", &x)
+#define sfll2(x,y)		scanf("%I64d %I64d", &x, &y)
+#define sfll3(x,y,z)		scanf("%I64d %I64d %I64d", &x, &y, &z)
+#define angle(a)		(atan2((a).imag(), (a).real()))
+#define vec(a,b)		((b)-(a))
+#define length(a)		(hypot((a).imag(), (a).real()))
+#define dp(a,b)			((conj(a)*(b)).real()) // if zero prep
+#define cp(a,b)			((conj(a)*(b)).imag()) // if zero parl
+#define same(p1,p2)		(dp(vec(p1,p2),vec(p1,p2)) <= EPS)
+#define rotate0(p,ang)		((p)*exp(Point(0,ang)))
+#define rotateA(p,ang,about)	(rotate0(vec(about,p),ang)+about)
+#define reflect0(v,m)		(conj((v)/(m))*(m))
+#define normalize(a)		(a)/length(a)
+#define lengthSqr(p)		dp(p,p)
+#define pii			pair<int,int>
+#define V			vector
+#define MP			make_pair
+#define X			real()
+#define Y			imag()
+
+typedef complex<double> 	point;
+typedef long long ll;
+
+const double PI = acos(-1.0);
+const double EPS = 1e-10;
+const ll mod = ll(1e9 + 7), oo = ll(1e9), si = 1000000;
+
+V<V<pii> > adj;
+ll n, s, g[20];
+
+ll pw(ll a, ll p){
+	if (p == 1) return a;
+	if (p == 0) return 1;
+	ll ret = pw(a, p / 2) % mod;
+	ret = (ret * ret) % mod;
+	if (p % 2 == 1) ret = (ret * a) % mod;
+	return ret;
+}
+ll fc(ll end, ll start){
+	ll ret = 1;
+	for (ll i = end - start + 1; i <= end; i++){
+		ret = (ret * (i % mod)) % mod;
+	}
+	return ret;
+}
+ll Cnr(ll n, ll m){
+	return (fc(n, m) * pw(fc(m,m), mod - 2)) % mod;
+}
+
+ll inc_exc(int id, int mask){
+	if (id == n){
+		int cnt = 0;
+		long long sum = s;
+		for (int i = 0; i < n; i++){
+			if (((mask >> i) & 1) == 1){
+				cnt++;
+				sum = (sum - g[i] - 1);
+			}
+		}
+		if (sum < 0) return 0;
+		sum = Cnr(sum + n - 1, n - 1);
+		if (cnt % 2 == 0) return sum;
+		return -sum;
+	}
+	ll ret = 0;
+	ret = ((ret + inc_exc(id + 1, mask | (1 << id)) ) % mod + mod) % mod;
+	ret = ((ret + inc_exc(id + 1, mask ) ) % mod + mod ) % mod;
+	return ret;
+}
+int main()
+{
+	//cout << Cnr(4, 2);
+	//cout << pw(1, mod - 2) << endl;
+	Emsawy();
+	while (cin >> n >> s){
+		for (int i = 0; i < n; i++){
+			cin >> g[i];
+		}
+		cout << inc_exc(0, 0) << endl;
+	}
+	return 0;
+}

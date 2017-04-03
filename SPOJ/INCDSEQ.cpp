@@ -53,8 +53,8 @@ const ll mod = ll(5e6), oo = ll(1e9), si = 1000000;
 
 V<V<pii> > adj;
 int n, m, k, t, c;
-unsigned long long dp[55][11000*8];
-void update(int p, int l, int r, int x, int y, int q, unsigned long long vl){
+long long dp[55][11000*8];
+void update(int p, int l, int r, int x, int y, int q, long long vl){
 	if (l > y || r < x)
 		return;
 	if (x <= l && r <= y){
@@ -65,7 +65,7 @@ void update(int p, int l, int r, int x, int y, int q, unsigned long long vl){
 	update(p * 2 + 1, (l + r) / 2 + 1, r, x, y,q,vl);
 	dp[q][p] = (dp[q][p * 2] + dp[q][p * 2 + 1]) % mod ;
 }
-unsigned long long get(int p, int l, int r, int x, int y, int q){
+long long get(int p, int l, int r, int x, int y, int q){
 	if (l > y || r < x)
 		return 0;
 	if (x <= l && r <= y)

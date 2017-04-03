@@ -1,7 +1,7 @@
 /*
 - I used dp tech. to solve.
 - state of dp is (i,j), dp[i][j] is the number of sequence with length i which end with number j.
-- but i dorp one dimsion to optimze the memory and used segment tree to optimze the time to get the answer for each state dp[--][j].
+- but i dorp one dimesion to optimze the memory and used segment tree to optimze the time to get the answer for each state dp[--][j].
 */
 
 #define _CRT_SECURE_NO_WARNINGS

@@ -1,3 +1,16 @@
+
+/*
+taken from tutorials:
+
+Solution. Since k ≤ 8 you can solve this problem using brute force. This means that you can recursively construct all possible kk possibilities of first k assignments. (For k = 8 this is equal to 16 777 216.) For each of that assignments you need to check whether it is correct or not (by problem statement). Ths can be simply done using loops.
+When you know the number of assignment for the first k tables (let it be f(k)),
+all you need to do is to count the number of assignment for the rest n - k plaques.
+Since there should bo no path to 1, there should be no path to any of first k houses,
+so at each plaque for houses from k + 1 to n there can be any number from k + 1 to n,inclusive.
+There are (n - k)n - k such possibilities. And hence the total answer is f(k)(n - k)n - k.
+
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

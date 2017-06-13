@@ -1,5 +1,6 @@
 /*
-   I tried every gate will all the possible errors.
+   I used every gate will all the possible errors, i check for every time if i get the same output or not.
+   If i get the same output zero time, 1 time or more than one time. 
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>

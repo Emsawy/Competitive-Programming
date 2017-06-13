@@ -1,7 +1,9 @@
+
 /*
-   I used every gate will all the possible errors, i check for every time if i get the same output or not.
-   If i get the same output zero time, 1 time or more than one time. 
-*/
+I used every gate will all the possible errors, i check for every time if i get the same output or not.
+If i get the same output zero time, 1 time or more than one time.
+*/ 
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>
@@ -69,15 +71,15 @@ void Inputs(){
 	cin >> ch;
 	if (ch == 'a'){
 		cin >> i1 >> i2;
-		in.push_back(Gat(i1, i2, (And)));
+		in.push_back(Gat(i1, i2, And));
 	}
 	else if (ch == 'o'){
 		cin >> i1 >> i2;
-		in.push_back(Gat(i1, i2, (Or)));
+		in.push_back(Gat(i1, i2, Or));
 	}
 	else if (ch == 'x'){
 		cin >> i1 >> i2;
-		in.push_back(Gat(i1, i2, (Xor)));
+		in.push_back(Gat(i1, i2, Xor));
 	}
 	else{
 		cin >> i1;
@@ -110,11 +112,25 @@ bool Calculate(Gat p , int tst){
 	else if (p.smash == Invert) return !ret;
 	else return ret;
 }
+bool workgood(int B , V<int>&out){
+	for (int i = 0; i < g; i++){
+			for (int q = 0; q < B; q++){
+				for (int r = 0; r < u; r++)
+					if (check[q][r + n] != Calculate(in[out[r] - 1], q))
+						return false;
+			}
+		}
+	return true;
+}
 int main()
 {
 	Emsawy();
 	while (cin >> n >> g >> u){
 		if (n + g + u == 0) break;
+
+		in.clear();
+		test.clear();
+
 		for (int i = 0; i < g; i++)
 			Inputs();
 	
@@ -130,8 +146,13 @@ int main()
 				cin >> test[i][j];
 			}
 		}
+
 		check = test;
 		cout << "Case " << ++c << ": ";
+		if (workgood(B, out)){
+			cout << "No faults detected\n";
+			continue;
+		}
 		int cnt = 0, ans = -1 , error;
 		for (int i = 0; i < g; i++){
 			for (int j = 0; j < 3; j++){
@@ -159,8 +180,6 @@ int main()
 		}
 		else cout << "Unable to totally classify the failure\n";
 
-		in.clear();
-		test.clear();
 	}
 	return 0;
 }

@@ -54,13 +54,12 @@ enum Gates{ And, Or, Xor, Not, stuckZero, stuckOne, Invert , Idel };
 struct Gat{
 	string i1, i2;
 	Gates typ , smash;
-	Gat(){};
 	Gat(string i1, string i2, Gates typ) :i1(i1), i2(i2), typ(typ), smash(Idel){}
 	Gat(string i1, Gates typ) :i1(i1), i2("!"), typ(typ), smash(Idel){}
 };
 
 V<Gat> in;
-V<V<int> > test;
+V<V<int> > test , check;
 void Inputs(){
 	string i1, i2;
 	cin >> ch;
@@ -127,6 +126,7 @@ int main()
 				cin >> test[i][j];
 			}
 		}
+		check = test;
 		cout << "Case " << ++c << ": ";
 		int cnt = 0, ans = -1 , error;
 		for (int i = 0; i < g; i++){
@@ -134,25 +134,17 @@ int main()
 				if (j == 0) in[i].smash = stuckOne;
 				else if (j == 1) in[i].smash = stuckZero;
 				else in[i].smash = Invert;
-				bool ok = 0;
 				for (int q = 0; q < B; q++){
-					for (int r = 0; r < u; r++){
-						if (Calculate(in[out[r] - 1], q) != test[q][r + n]){
-							ok = 1;
-							break;
-						}
-					}
-					if (ok) break;
+					for (int r = 0; r < u; r++)
+						check[q][r+n] = Calculate(in[out[r] - 1], q);	
 				}
-				in[i].smash = Idel;
-				if (!ok){
+				if (check == test){
 					ans = i+1;
 					error = j;
 					cnt++;
 				}
-				if (cnt > 1) break;
+				in[i].smash = Idel;
 			}
-			if (cnt > 1) break;
 		}
 
 		if (cnt == 0) cout << "No faults detected\n";

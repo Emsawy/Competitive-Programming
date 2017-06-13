@@ -1,3 +1,6 @@
+/*
+   I tried every gate will all the possible errors.
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

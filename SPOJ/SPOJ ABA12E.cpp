@@ -46,11 +46,11 @@ const double EPS = 1e-10;
 const ll mod = ll(1e9 + 7), oo = ll(1e9), si = 1000000;
 
 V<V<pii> > adj;
-ll n, m, k, t, c , sum[50005];
+ll n, m, k, t, c, sum[50005];
 ll valid(ll mid, ll k){
 	ll ret = 0;
 	for (int i = 0; i < n; i++){
-		ll go = upper_bound(sum, sum + n , mid + (i - 1 >= 0 ? sum[i - 1] : 0)) - sum - i;
+		ll go = upper_bound(sum, sum + n, mid + (i - 1 >= 0 ? sum[i - 1] : 0)) - sum - i;
 		ret += go;
 	}
 	return ret;
@@ -65,12 +65,12 @@ int main()
 			sum[i] = v[i];
 			if (i) sum[i] += sum[i - 1];
 		}
-		ll s = 0, e = 10, res = 0;
+		ll s = 0, e = 1e9 * n + 1000, res = 0;
 		while (s <= e){
 			ll mid = (s + e) / 2;
 			ll ret = valid(mid, k);
-			if (ret <= k) s = mid + 1, res = mid;
-			else e = mid - 1;
+			if (ret >= k) e = mid - 1, res = mid;
+			else s = mid + 1;
 		}
 		cout << res << endl;
 	}

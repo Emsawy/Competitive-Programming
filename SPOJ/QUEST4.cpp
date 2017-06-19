@@ -94,7 +94,7 @@ struct bipartite_graph{
 		}
 		return ans;
 	}
-
+	// Wrong
 	V<V<int> > min_path_coverage(){
 		V<V<int> > ret;
 		for (int i = 0; i < V1; i++){

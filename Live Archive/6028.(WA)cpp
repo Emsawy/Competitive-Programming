@@ -59,35 +59,25 @@ void shortestpath(){
 	}
 }
 
-int dp[22][(1 << 20) + 1];
-int go(int src, int sub){
+int dp[20][(1 << 19)][20];
+int go(int src, int sub,int sink){
+	if (src == sink)
+		return (sub == 0 ? 0 : oo);
 
-	if (sub == 0)
-		return dp[src][sub] = 0;
-
-	int &ret = dp[src][sub];
+	int &ret = dp[src][sub][sink];
 	if (ret != -1) return ret;
 	ret = oo;
 	for (int i = 0; i < n; i++){
 		if (!((sub >> i) & 1)) continue;
-		ret = min(ret, go(i, (sub & ~(1 << i))) + g[src][i]);
+		ret = min(ret, go(i, (sub & ~(1 << i)),sink) + g[src][i]);
 	}
 	return ret;
 }
-int get(int src, int sub){
-	if (sub == 0)
-		return src;
-	for (int i = 0; i < n; i++){
-		if (!((sub >> i) & 1)) continue;
-		if (dp[i][(sub & ~(1 << i))] + g[src][i] == dp[src][sub]){
-			return get(i, (sub & ~(1 << i)));
-		}
-	}
-	assert(1);
-	return 0; // doesn't matter
-}
 int er(int msk, int i){
 	return (msk & ~(1 << i));
+}
+bool is(int msk, int i){
+	return ((msk >> i) & 1);
 }
 int main()
 {
@@ -103,24 +93,38 @@ int main()
 		}
 		shortestpath();
 		clr(dp, -1);
-		int src = 0, sink = n - 1, h = (n - 2) , fh = h / 2;
-		int to = (1 << n), res = oo;
+		int src = 0, sink = n - 1, h = (n - 2), fh = h / 2;
+		int to = (1 << n) - 1, res = oo;
 		for (int msk = 0; msk <= to; msk++){
-			int cnt = 0 , mask = msk;
-			mask = er(mask, src);
-			mask = er(mask, sink);
-			for (int j = 0; j < n; j++){
-				cnt += ((mask >> j) & 1);
+			V<int>one , zero;
+			if (is(msk, src) || is(msk,sink)) continue;
+
+			for (int j = 1; j < n - 1; j++)
+				if (is(msk, j))
+					one.push_back(j);
+				else
+					zero.push_back(j);
+
+			if (one.size() != fh) continue;
+			
+			int A = oo, B = oo;
+			for (int i = 0; i < one.size(); i++){
+				int a = go(src, msk, one[i]);
+				for (int j = 0; j < zero.size(); j++){
+					int b = go(one[i], er(er((~msk) & to, src), sink), zero[j]);
+					int c = g[zero[j]][sink];
+					A = min(A, a + b + c);
+				}
 			}
-			if (cnt != fh) continue;
-			int a = go(src, mask), a0 = get(src, mask);
-			int b = go(a0, er(er(~mask & (to - 1), src), sink)), b0 = get(a0, er(er(~mask & (to - 1), src), sink));
-			int c = g[b0][sink];
-			int d = go(sink , mask), d0 = get(sink, mask);
-			int e = go(d0, er(er(~mask & (to - 1), src), sink)), e0 = get(d0, er(er(~mask & (to - 1), src), sink));
-			int f = g[e0][src];
-			int now = a + b + c + d + e + f;
-			res = min(res, now);
+			for (int i = 0; i < one.size(); i++){
+				int a = go(sink, msk, one[i]);
+				for (int j = 0; j < zero.size(); j++){
+					int b = go(one[i], er(er((~msk) & to, src), sink), zero[j]);
+					int c = g[zero[j]][src];
+					B = min(B, a + b + c);
+				}
+			}
+			res = min(res, A + B);
 		}
 		printf("Case %d: %d\n", ++c, res);
 	}

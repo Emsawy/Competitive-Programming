@@ -43,15 +43,12 @@ public:
 			if (cnt < 99 && now == v[i])
 				cnt++;
 			else {
-				stringstream ss;
-				ss << cnt;
-				string me;
-				ss >> me;
-				if (me.size() == 1) me = "0" + me;
-				string tmp = "";
-				tmp += now;
-				me = tmp + me;
-				ret.push_back(me);
+				char ch[55];
+				string me = "";
+				me += now;
+				if (cnt < 10) me += '0';
+				sprintf(ch, "%d", cnt);
+				ret.push_back(me + ch);
 				now = v[i];
 				i++;
 				cnt = 0;

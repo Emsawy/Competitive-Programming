@@ -57,7 +57,7 @@ int main()
 {
 	Emsawy();
 	point a, b, c, d;
-	int t , x , y;
+	double t , x , y;
 	cin >> t;
 	while (t--){
 		cin >> x >> y; a = point(x, y);

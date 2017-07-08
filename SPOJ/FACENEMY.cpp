@@ -65,13 +65,11 @@ int main()
 		cin >> x >> y; c = point(x, y);
 		cin >> x >> y; d = point(x, y);
 
-		long double l = dis(b, a), r = dis(c, a);
-		long double A = acos(dp(a - b, a - c) / (l * r));
+		long double A = atan2((b.Y - a.Y), (b.X - a.X)) - atan2((c.Y - a.Y), (c.X - a.X));
 		while (A >= 2 * PI) A -= 2 * PI;
 		while (A < 0) A += 2 * PI;
 
-		l = dis(d, c), r = dis(a, c);
-		long double B = acos(dp(c - d, c - a) / (l * r));
+		long double B = atan2((d.Y - c.Y), (d.X - c.X)) - atan2((a.Y - c.Y), (a.X - c.X));
 
 		while (B >= 2 * PI) B -= 2 * PI;
 		while (B < 0) B += 2 * PI;

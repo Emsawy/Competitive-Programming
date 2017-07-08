@@ -39,17 +39,17 @@ void Emsawy(){
 #define Y			imag()
 
 
-typedef complex<double> 	point;
+typedef complex<long double> 	point;
 typedef long long ll;
 
-const double PI = acos(-1.0);
-const double EPS = 1e-10;
+const long double PI = acos(-1.0);
+const long double EPS = 1e-15;
 const ll mod = ll(1e9 + 7), oo = ll(1e9);
 
 V<V<pii> > adj;
 int n, m, k, t, c;
 
-double dis(point a, point b){
+long double dis(point a, point b){
 	return sqrt((a.X - b.X) * (a.X - b.X) + (a.Y - b.Y) * (a.Y - b.Y));
 }
 
@@ -57,7 +57,7 @@ int main()
 {
 	Emsawy();
 	point a, b, c, d;
-	double x , y;
+	long double x, y;
 	cin >> t;
 	while (t--){
 		cin >> x >> y; a = point(x, y);
@@ -65,14 +65,19 @@ int main()
 		cin >> x >> y; c = point(x, y);
 		cin >> x >> y; d = point(x, y);
 
-		double l = dis(a, b), r = dis(a, c);
-		double A = acos(dp(b - a, c - a) / (l * r)) * (180 / PI);
+		long double l = dis(b, a), r = dis(c, a);
+		long double A = acos(dp(a - b, a - c) / (l * r));
+		while (A >= 2 * PI) A -= 2 * PI;
+		while (A < 0) A += 2 * PI;
 
-		l = dis(c, d), r = dis(c, a);
-		double B = acos(dp(d - c, a - c) / (l * r)) * (180 / PI);
+		l = dis(d, c), r = dis(a, c);
+		long double B = acos(dp(c - d, c - a) / (l * r));
 
-		A = min(A, 360 - A);
-		B = min(B, 360 - B);
+		while (B >= 2 * PI) B -= 2 * PI;
+		while (B < 0) B += 2 * PI;
+
+		A = fminl(A, 2*PI - A);
+		B = fminl(B, 2*PI - B);
 
 		if (fabs(A - B) <= EPS) cout << 0 << endl;
 		else if (A < B) cout << "Hero" << endl;

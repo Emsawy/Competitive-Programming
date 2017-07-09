@@ -1,3 +1,7 @@
+
+/*
+http://washingtonzju.blogspot.com.eg/2010/01/solution-of-ordering-soldiers.html
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

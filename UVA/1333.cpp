@@ -1,3 +1,8 @@
+
+/*
+- Use parallelogram law.(https://www.google.com.eg/url?sa=t&rct=j&q=&esrc=s&source=web&cd=13&cad=rja&uact=8&ved=0ahUKEwiQrOnEi_vUAhVM1xQKHR6eBjYQFgheMAw&url=https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FParallelogram_law&usg=AFQjCNFZTqpIp5vjaW2DaWfrJMYi3Ci0Kg)
+- It may help you ( https://drive.google.com/open?id=0B8KMgGLxrbyZYTVfQnlRZlByMU0 )
+*/
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 #include <unordered_map>

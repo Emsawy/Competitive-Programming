@@ -50,24 +50,24 @@ V<V<pii> > adj;
 int k, t, c;
 ll n , m;
 
-ll dp[70][70];
-
-ll go(int nd, int cnt){
-	if (cnt < 0) return 0;
-	if (nd == 0) return cnt == 0;
-	ll &ret = dp[nd][cnt];
-	if (ret != -1) return ret;
-	ret = 0;
-	ret += go(nd - 1, cnt - 1);
-	ret += go(nd - 1, cnt);
-	return ret;
+const int R = 70, C = 70;
+ll ncr[R][C];
+void gen(){
+	ncr[0][0] = 1;
+	for (int i = 0; i < R; i++){
+		ncr[i][0] = 1;
+		for (int j = 1; j <= i; j++){
+			ncr[i][j] += ncr[i - 1][j - 1] + ncr[i - 1][j];
+		}
+	}
 }
 ll valid(ll mid){
 	int K = k;
 	ll res = 0;
 	for (int i = 63; i >= 0; i--){
 		if (((mid >> i) & 1) == 0) continue;
-		res += go(i,K);
+		if (K < 0) break;
+		res += ncr[i][K];
 		K--;
 	}
 	if (K == 0) res++;
@@ -76,9 +76,8 @@ ll valid(ll mid){
 int main()
 {
 	Emsawy();
+	gen();
 	while (cin >> m >> k){
-		clr(dp, -1);
-
 		ll lo = 1, hi = 1e18, res;
 		while (lo <= hi){
 			ll mid = (lo + hi) / 2;

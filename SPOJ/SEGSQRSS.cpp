@@ -1,0 +1,155 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include <bits/stdc++.h>
+#include <unordered_map>
+#include <unordered_set>
+
+using namespace std;
+void Emsawy(){
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+	freopen("output.txt", "w", stdout);
+#endif
+}
+
+#define sz(v)			((int)((v).size()))
+#define all(v)			((v).begin()), ((v).end())
+#define allr(v)			((v).rbegin()), ((v).rend())
+#define clr(v,d)		memset(v, d, sizeof(v))
+#define sf(x)			scanf("%d", &x)
+#define sf2(x,y)		scanf("%d %d", &x, &y)
+#define sf3(x,y,z)		scanf("%d %d %d", &x, &y, &z)
+#define sfll(x)			scanf("%I64d", &x)
+#define sfll2(x,y)		scanf("%I64d %I64d", &x, &y)
+#define sfll3(x,y,z)		scanf("%I64d %I64d %I64d", &x, &y, &z)
+#define angle(a)		(atan2((a).imag(), (a).real()))
+#define vec(a,b)		((b)-(a))
+#define length(a)		(hypot((a).imag(), (a).real()))
+#define dp(a,b)			((conj(a)*(b)).real()) // if zero prep
+#define cp(a,b)			((conj(a)*(b)).imag()) // if zero parl
+#define same(p1,p2)		(dp(vec(p1,p2),vec(p1,p2)) <= EPS)
+#define rotate0(p,ang)		((p)*exp(Point(0,ang)))
+#define rotateA(p,ang,about)	(rotate0(vec(about,p),ang)+about)
+#define reflect0(v,m)		(conj((v)/(m))*(m))
+#define normalize(a)		(a)/length(a)
+#define lengthSqr(p)		dp(p,p)
+#define pii			pair<int,int>
+#define V			vector
+#define MP			make_pair
+#define X			real()
+#define Y			imag()
+#define vl			first
+#define typ			second
+
+typedef complex<double> 	point;
+typedef long long ll;
+
+const double PI = acos(-1.0);
+const double EPS = 1e-10;
+const ll mod = ll(1e9 + 7), oo = ll(1e9), si = 200005;
+
+V<V<pii> > adj;
+int n, m, t, k;
+ll tr[200005 * 4], sq[200005 * 4];
+pair<ll, short> lazy[200005 * 4];
+ll g[200005];
+void shift(int p, int s, int e, int add){
+	int mid = (s + e) / 2;
+	if (lazy[p].typ == 1){
+		lazy[p * 2].vl += lazy[p].vl;
+		lazy[p * 2 + 1].vl += lazy[p].vl;
+		lazy[p * 2].typ = (lazy[p * 2].typ == 2 ? 2 : 1);
+		lazy[p * 2 + 1].typ = (lazy[p * 2 + 1].typ == 2 ? 2 : 1);
+		sq[p * 2] = sq[p * 2] + (mid - s + 1) * lazy[p * 2].vl * lazy[p * 2].vl + 2 * tr[p * 2] * lazy[p * 2].vl;
+		sq[p * 2 + 1] = sq[p * 2 + 1] + (e - mid) * lazy[p * 2 + 1].vl * lazy[p * 2 + 1].vl + 2 * tr[p * 2 + 1] * lazy[p * 2 + 1].vl;
+		tr[p * 2] += lazy[p].vl * (mid - s + 1);
+		tr[p * 2 + 1] += lazy[p].vl * (e - mid);
+	}
+	else if (lazy[p].typ == 2){
+		lazy[p * 2].vl = lazy[p].vl;
+		lazy[p * 2 + 1].vl = lazy[p].vl;
+		lazy[p * 2].typ = lazy[p].typ;
+		lazy[p * 2 + 1].typ = lazy[p].typ;
+		sq[p * 2] = (mid - s + 1) * lazy[p * 2].vl * lazy[p * 2].vl;
+		sq[p * 2 + 1] = (e - mid) * lazy[p * 2 + 1].vl * lazy[p * 2 + 1].vl;
+		tr[p * 2] = lazy[p].vl * (mid - s + 1);
+		tr[p * 2 + 1] = lazy[p].vl * (e - mid);
+	}
+	lazy[p] = MP(0, 0);
+}
+void update(int p, int s, int e, int x, int y, int add, short tp){
+
+	shift(p, s, e, add);
+	if (x > e || s > y) return;
+	if (x <= s && e <= y){
+		if (tp == 1){
+			lazy[p].vl += add;
+			lazy[p].typ = (lazy[p].typ == 2 ? 2 : 1);
+		}
+		else {
+			lazy[p].vl = add;
+			lazy[p].typ = 2;
+		}
+		if (lazy[p].typ == 1){
+			sq[p] = sq[p] + (e - s + 1) * lazy[p].vl * lazy[p].vl + 2 * tr[p] * lazy[p].vl;
+			tr[p] += lazy[p].vl * (e - s + 1);
+		}
+		else{
+			sq[p] = (e - s + 1) * lazy[p].vl * lazy[p].vl;
+			tr[p] = lazy[p].vl * (e - s + 1);
+		}
+		return;
+	}
+	int mid = (s + e) / 2;
+	update(p * 2, s, mid, x, y, add, tp);
+	update(p * 2 + 1, mid + 1, e, x, y, add, tp);
+	tr[p] = tr[p * 2 + 1] + tr[p * 2];
+	sq[p] = sq[p * 2] + sq[p * 2 + 1];
+
+}
+ll get(int p, int l, int r, int x, int y){
+
+	shift(p, l, r, 0);
+	if (l > y || r < x)
+		return 0;
+	if (x <= l && r <= y)
+		return sq[p];
+	return get(p * 2, l, (l + r) / 2, x, y) + get(p * 2 + 1, (l + r) / 2 + 1, r, x, y);
+}
+
+void build(int p, int l, int r){
+	if (l == r){
+		tr[p] = g[l];
+		sq[p] = g[l] * g[l];
+		return;
+	}
+	build(p * 2, l, (l + r) / 2);
+	build(p * 2 + 1, (l + r) / 2 + 1, r);
+	tr[p] = tr[p * 2] + tr[p * 2 + 1];
+	sq[p] = sq[p * 2] + sq[p * 2 + 1];
+}
+
+int main()
+{
+	Emsawy();
+	cin >> t;
+	while (t--){
+		cin >> n >> m;
+		for (int i = 0; i < n; i++)
+			cin >> g[i];
+		build(1, 0, n - 1);
+		int a, b, c, d;
+		cout << "Case " << ++k << ":" << endl;
+		while (m--){
+			cin >> a >> b >> c;
+			b--, c--;
+			if (a == 0 || a == 1){
+				cin >> d;
+				update(1, 0, n - 1, b, c, d, (a ? 1 : 2));
+			}
+			else {
+				cout << get(1, 0, n - 1, b, c) << endl;
+			}
+		}
+	}
+	return 0;
+}

@@ -1,6 +1,6 @@
 
 /*
-back to solve with it
+another solution, i will try later
 http://qkxue.net/info/113260/UVA-Boxes-Line-12657
 */
 #define _CRT_SECURE_NO_WARNINGS

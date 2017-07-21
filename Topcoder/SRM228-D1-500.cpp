@@ -50,3 +50,51 @@ public:
 		return go(0, bags.size() - 1, 0);
 	}
 };
+/*
+// Iterative
+#include <vector>
+#include <list>
+#include <map>
+#include <set>
+#include <queue>
+#include <deque>
+#include <stack>
+#include <bitset>
+#include <algorithm>
+#include <functional>
+#include <numeric>
+#include <utility>
+#include <sstream>
+#include <iostream>
+#include <iomanip>
+#include <cstdio>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+
+class BagsOfGold {
+public:
+
+	int dp[55][55];
+
+	int netGain(vector <int> bags){
+
+		int n = bags.size() , oo = 1e9;
+		for (int i = 0; i < bags.size(); i++)
+			dp[i][i] = bags[i];
+
+		for (int i = 1; i < n; i++){
+			for (int j = 0; j + i < n; j++){
+				int r = j + i;
+				dp[j][r] = max(bags[j] - dp[j + 1][r], bags[r] - dp[j][r - 1]);
+			}
+		}
+		return dp[0][n - 1];
+	}
+};
+
+
+*/

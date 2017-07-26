@@ -54,7 +54,7 @@ int g[size];
 
 ll query(int p, int s, int e, int x, int y){
 	if (s > y || e < x)
-		return (1 << 30) - 1;         // take care
+		return -1;         // take care
 	if (x <= s && e <= y)
 		return seg[p];
 

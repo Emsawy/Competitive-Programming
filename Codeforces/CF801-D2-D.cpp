@@ -68,29 +68,12 @@ int main()
 			cin >> x >> y;
 			v[i] = point(x, y);
 		}
-		int lp = 1000;
-		double s = 0, e = 1e12, res = 0.0;
-		while (lp--){
-			double md = (s + e) / 2.0;
-
-			bool ok = 1;
-			for (int i = 0; i < n; i++){
-				int l = (i - 1 + n) % n, r = (i + 1) % n;
-				if (distToSegment(v[l], v[r], v[i]) - md * 2 < EPS) {
-					ok = 0;
-					break;
-				}
-				if (dis(v[i], v[l]) - md * 2 < EPS || dis(v[i], v[r]) - md * 2 < EPS){
-					ok = 0;
-					break;
-				}
-			}
-
-			if (ok) s = md, res = md;
-			else e = md;
-			lp--;
+		double res = 1e12;
+		for (int i = 0; i < n; i++){
+			int l = (i - 1 + n) % n, r = (i + 1) % n;
+			res = min(distToSegment(v[l], v[r], v[i]) / 2.0, res);
 		}
-		res += EPS;
+
 		printf("%0.9f\n", res);
 	}
 	return 0;

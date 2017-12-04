@@ -52,13 +52,13 @@ struct Node
 V<Node> adj[N];
 int par[N], vs[N];
 
-set<pair<int, int> >st;
+map<int,map<int,bool> > color;
 Node go(Node x){
 	for (int i = 0; i < adj[x.nd].size(); i++){
 		if (vs[adj[x.nd][i].nd]) continue;
 		vs[adj[x.nd][i].nd] = 1;
 		Node ret = go(adj[x.nd][i]);
-		x.from += ret.from + (st.find(MP(adj[x.nd][i].nd, x.nd)) != st.end());
+		x.from += ret.from + color[adj[x.nd][i].nd][x.nd];
 	}
 	return x;
 }
@@ -68,7 +68,7 @@ void solve(Node x, int cnt){
 	for (int i = 0; i < adj[x.nd].size(); i++){
 		if (vs[adj[x.nd][i].nd]) continue;
 		vs[adj[x.nd][i].nd] = 1;
-		solve(adj[x.nd][i], cnt + ((st.find(MP(adj[x.nd][i].nd, x.nd)) == st.end())? 1: -1));
+		solve(adj[x.nd][i], cnt + (!color[adj[x.nd][i].nd][x.nd]? 1 : -1));
 	}
 }
 int main()
@@ -80,7 +80,7 @@ int main()
 			cin >> u >> v;
 			adj[u].push_back(Node(v));
 			adj[v].push_back(Node(u));
-			st.insert(MP(u, v));
+			color[u][v] = 1;
 		}
 		vs[1] = 1;
 		Node ret = go(Node(1));

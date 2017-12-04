@@ -36,33 +36,28 @@ int dx[]{1, -1, 0, 0, 1, -1, 1, -1};
 int dy[]{0, 0, 1, -1, 1, -1, -1, 1};
 
 int n, m, k;
-const int N = 100 + 5, ext = N*N * 10 * 2 + 1000;
-int a[N], b[N], dp[2][(N*N * 10) * 2 + 2002];
+const int N = 100, ext = N* N * 10;
+int a[N], b[N+1], dp[N+1][ext * 2];
 
 int main()
 {
 	Emsawy();
 	while (cin >> n >> k){
-		for (int i = 1; i <= n; i++)
+		for (int i = 0; i < n; i++)
 			cin >> a[i];
-		for (int i = 1; i <= n; i++)
+		for (int i = 0; i < n; i++)
 			cin >> b[i];
-		for (int i = 0; i < 2; i++){
-			for (int j = 0; j < (N*N * 10) * 2 + 2002; j++){
-				dp[i][j] = -oo;
-			}
-		}
+		fill(dp[0], dp[0] + ext * 2 * N, -oo);
 		dp[0][ext] = 0;
-		for (int i = 1; i <= n; i++){
-			for (int j = -N * N * 10; j <= N * N * 10; j++){
-				dp[i&1][j + ext] = max(dp[i&1][j + ext], dp[(i - 1)&1][j - (a[i] - b[i] * k) + ext] + a[i]);
-				dp[i&1][j + ext] = max(dp[i&1][j + ext], dp[(i - 1)&1][j + ext]);
+		for (int i = 0; i < n; i++){
+			for (int j = -ext; j <= ext; j++){
+				if (j - (a[i] - b[i] * k) >= -ext) 
+					dp[i + 1][j + ext] = max(dp[i + 1][j + ext], dp[i][j - (a[i] - b[i] * k) + ext] + a[i]);
+				dp[i + 1][j + ext] = max(dp[i + 1][j + ext], dp[i][j + ext]);
 			}
-			for (int j = 0; j < (N*N * 10) * 2 + 2002; j++)
-				dp[(i & 1) ^ 1][j] = -oo;
 		}
-		if (dp[n&1][ext] <= 0) dp[n&1][ext] = -1;
-		cout << dp[n&1][ext] << endl;
+		if (dp[n][ext] <= 0) dp[n][ext] = -1;
+		cout << dp[n][ext] << endl;
 	}
 	return 0;
 }

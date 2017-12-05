@@ -44,7 +44,6 @@ int n, m, k, t, c;
 V<V<int> > adj, tree;
 const int N = 1500 + 5;
 char g[N][N];
-int vst[N][N];
 pair<int,int> vs[N][N];
 int gx(int x){
 	return ((x%n) + n) % n;
@@ -53,28 +52,17 @@ int gy(int y){
 	return ((y%m) + m) % m;
 }
 bool go(int i, int j){
-	if (vs[gx(i)][gy(j)] != MP(-oo, -oo) && vs[gx(i)][gy(j)] != MP(i, j))
-		return 1;
+	if (g[gx(i)][gy(j)] == '#') return 0;
 	if (vs[gx(i)][gy(j)] != MP(-oo, -oo))
-		return 0;
-
+		return vs[gx(i)][gy(j)] != MP(i, j);
 	vs[gx(i)][gy(j)] = MP(i, j);
 	for (int k = 0; k < 4; k++){
 		int x = i + dx[k], y = dy[k] + j;
-		if (g[gx(x)][gy(y)] == '#') continue;
 		if(go(x, y)) return 1;
 	}
 	return 0;
 }
-void fil(int i, int j){
-	if (vst[i][j]) return;
-	vst[i][j] = 1;
-	for (int k = 0; k < 4; k++){
-		int x = (i + dx[k] + n) % n, y = (dy[k] + j + m) % m;
-		if (g[x][y] == '#') continue;
-		fil(x, y);
-	}
-}
+
 int main()
 {
 	Emsawy();
@@ -87,20 +75,9 @@ int main()
 					s = { i, j };
 			}
 		}
-		fill(vs[0], vs[0] + N * N, MP(-oo, -oo));
-		fil(s.first, s.second);
-		bool ret = 0;
-		for (int i = 0; i < n; i++){
-			for (int j = 0; j < m; j++){
-				if (vst[i][j]){
-					if (vs[i][j] != MP(-oo, -oo)) continue;
-					ret |= go(i, j);
-				}
-			}
-		}
-		if (ret) cout << "Yes" << endl;
+		fill(vs[0], vs[0] + N*N, MP(-oo, -oo));
+		if (go(s.first,s.second)) cout << "Yes" << endl;
 		else cout << "No" << endl;
-		clr(vst, 0);
 	}
 	return 0;
 }

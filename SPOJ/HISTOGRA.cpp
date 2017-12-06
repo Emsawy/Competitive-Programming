@@ -87,8 +87,6 @@ void Emsawy(){
 #define p00          point(0,0)
 #define O            const point & 
 #define CD           const double &  
-#define EQ(a, b)     (fabs((a) - (b)) <= eps) /* equal to */
-#define LT(a, b)     ((a) < (b)-eps) /* less than */
 #define sz(v)	     ((int)((v).size()))
 #define all(v)	     ((v).begin()), ((v).end())
 #define allr(v)	     ((v).rbegin()), ((v).rend())

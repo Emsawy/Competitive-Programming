@@ -45,17 +45,17 @@ int n, m, k, c;
 const int N = 10000 + 4;
 int oc2[26][26],oc3[26][26][26];
 string s;
-int dp[N][4][2];
-int go(int id,int op, bool ok){
+int dp[N][4];
+int go(int id,int op){
 	if (id >= sz(s)) return id == sz(s) && op != 1;
-	int &ret = dp[id][op][ok];
+	int &ret = dp[id][op];
 	if (ret != -1) return ret;
 	ret = 0;
-	if (ok == 0)
-		ret = go(id + 1, 1, 0);
+	if (op == 1)
+		ret = go(id + 1, 1);
 	if (id + 2 <= sz(s) && (op != 2 || s[id - 2] != s[id] || s[id - 1] != s[id + 1])){
 		oc2[s[id]-'a'][s[id + 1]-'a'] ++;
-		bool rt = go(id + 2, 2,1);
+		bool rt = go(id + 2, 2);
 		if (!rt)
 			oc2[s[id]-'a'][s[id + 1]-'a'] --;
 		else
@@ -63,7 +63,7 @@ int go(int id,int op, bool ok){
 	}
 	if (id + 3 <= sz(s) && (op != 3 || s[id - 3] != s[id] || s[id - 2] != s[id + 1] || s[id - 1] != s[id + 2])){
 		oc3[s[id] - 'a'][s[id + 1] - 'a'][s[id + 2] - 'a'] ++;
-		bool rt = go(id + 3, 3,1);
+		bool rt = go(id + 3, 3);
 		if (!rt)
 			oc3[s[id] - 'a'][s[id + 1] - 'a'][s[id + 2]-'a'] --;
 		else
@@ -76,7 +76,7 @@ int main()
 	Emsawy();
 	while (cin >> s){
 		clr(dp, -1);
-		go(5, 1, 0);
+		go(5, 1);
 		V<string>ans;
 		for (int i = 0; i < 26; i++){
 			for (int j = 0; j < 26; j++){

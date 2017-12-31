@@ -35,112 +35,59 @@ int main() {
 	Emsawy();
 	int p;
 	while (cin >> n >> k >> p){
-
-		V<int>v(n), odd;
-		V<V<int> > P(p), K(k - p);
-		int st = 0;
-		bool ans = 0;
+		V<int>even, odd;
 		for (int i = 0; i < n; i++){
-			cin >> v[i];
-			if (v[i] % 2 == 0){
-				if (P.size() == 0) continue;
-				P[st].push_back(v[i]);
-				st += 1;
-				st %= P.size();
-			}
+			cin >> m;
+			if (m % 2) odd.push_back(m);
+			else even.push_back(m);
 		}
-		if (P.size() == 0){
-			int st = 0;
-			for (int i = 0; i < n; i++){
-				if (v[i] % 2 == 1){
-					if (st == K.size()){
-						odd.push_back(v[i]);
-						continue;
-					}
-					K[st].push_back(v[i]);
-					st++;
-				}
-				else
-					K[0].push_back(v[i]);
-			}
-			if (odd.size() % 2 || st < K.size()) {
-				cout << "NO" << endl;
-				continue;
-			}
-			while (odd.size()){
-				K[0].push_back(odd.back()); odd.pop_back();
-				K[0].push_back(odd.back()); odd.pop_back();
-			}
-			cout << "YES" << endl;
-			for (int i = 0; i < K.size(); i++){
-				cout << K[i].size() << " ";
-				for (int j = 0; j < K[i].size(); j++)
-					cout << K[i][j] << " ";
-				cout << endl;
-			}
-			continue;
-		}
-		bool ok = 0;
-		for (int i = 0; i < P.size();i++)
-			if (P[i].size() == 0)
-				ok = 1;
-			
-		for (int i = 0; i < n; i++){
-			if (v[i] % 2)
-				odd.push_back(v[i]);
-		}
-		if (ok){
-			for (int i = 0; i < P.size(); i++){
-				if (P[i].size() == 0){
-					if (odd.size() < 2){
-						ans = 1;
-						break;
-					}
-					P[i].push_back(odd.back()); odd.pop_back();
-					P[i].push_back(odd.back()); odd.pop_back();
-				}
-			}
-		}
-		for (int i = 0; i < K.size(); i++){
-			if (odd.size() == 0){
-				ans = 1;
-				break;
-			}
-			K[i].push_back(odd.back());
-			odd.pop_back();
-		}
-		while(odd.size()){
-			if (odd.size() < 2){
-				ans = 1;
-				break;
-			}
-			if (P.size()){
-				P[0].push_back(odd.back()); odd.pop_back();
-				P[0].push_back(odd.back()); odd.pop_back();
-			}
-			else {
-				K[0].push_back(odd.back()); odd.pop_back();
-				K[0].push_back(odd.back()); odd.pop_back();
-			}
-		}
-		if (ans){
+		int rem = max(0, p - (int)even.size());
+		int oddN = odd.size() - rem * 2;
+		if (oddN < k - p || (oddN - (k - p)) % 2){
 			cout << "NO" << endl;
 			continue;
+		}
+		V<V<int> > K(k - p), P(p);
+		for (int i = 0; i < P.size(); i++){
+			if (even.size() == 0){
+				P[i].push_back(odd.back()); odd.pop_back();
+				P[i].push_back(odd.back()); odd.pop_back();
+				continue;
+			}
+			P[i].push_back(even.back()); even.pop_back();
+		}
+		while (even.size()){
+			if (P.size()) P[0].push_back(even.back()), even.pop_back();
+			else K[0].push_back(even.back()), even.pop_back();
+		}
+		for (int i = 0; i < K.size(); i++){
+			K[i].push_back(odd.back()); odd.pop_back();
+		}
+		while (odd.size()){
+			if (P.size()) {
+				P[0].push_back(odd.back()), odd.pop_back();
+				P[0].push_back(odd.back()), odd.pop_back();
+			}
+			else{
+				K[0].push_back(odd.back()), odd.pop_back();
+				K[0].push_back(odd.back()), odd.pop_back();
+			}
 		}
 		cout << "YES" << endl;
 		for (int i = 0; i < P.size(); i++){
 			cout << P[i].size() << " ";
-			for (int j = 0; j < P[i].size(); j++)
+			for (int j = 0; j < P[i].size(); j++){
 				cout << P[i][j] << " ";
+			}
 			cout << endl;
 		}
 		for (int i = 0; i < K.size(); i++){
 			cout << K[i].size() << " ";
-			for (int j = 0; j < K[i].size(); j++)
+			for (int j = 0; j < K[i].size(); j++){
 				cout << K[i][j] << " ";
+			}
 			cout << endl;
 		}
-
 	}
 	return 0;
 }

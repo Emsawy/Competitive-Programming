@@ -63,9 +63,6 @@ int main()
 						
 							f[i][j][l] = f[i][k][l - 1] * f[k][j][0];
 							path[i][j][l] = k;
-							if (f[0][1][l] >= 1.0){
-								int st = 0;
-							}
 						}
 					}
 				}

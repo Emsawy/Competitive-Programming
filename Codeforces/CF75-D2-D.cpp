@@ -1,3 +1,10 @@
+
+/*
+
+http://codeforces.com/blog/entry/1715
+
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 

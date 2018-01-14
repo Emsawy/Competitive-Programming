@@ -1,3 +1,7 @@
+
+/*
+https://www.topcoder.com/tc?module=Static&d1=match_editorials&d2=srm312
+*/
 #include <vector>
 #include <list>
 #include <map>

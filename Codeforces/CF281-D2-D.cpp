@@ -35,16 +35,11 @@ int main() {
 		int mx = 0;
 		for (int i = 0; i < n; i++){
 			cin >> m;
-			if (st.empty()){
-				st.push(m);
-				continue;
-			}
-			if (st.top() > m) mx = max(mx, m ^ st.top());
-			while (st.size() && m >= st.top()){
-				mx = max(mx, m ^ st.top());
+			while (!st.empty()){
+				mx = max(mx, st.top() ^ m);
+				if (st.top() > m) break;
 				st.pop();
 			}
-			if (st.size())  mx = max(mx, m ^ st.top());
 			st.push(m);
 		}
 		cout << mx << endl;

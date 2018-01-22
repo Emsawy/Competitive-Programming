@@ -1,3 +1,9 @@
+/*
+Just implement the solution;
+ex: (A0 + A1) * (B0 - B1)
+A0 * B0 + A0 + B1 + A1 * B0 + A1 * B1
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 

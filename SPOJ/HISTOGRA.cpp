@@ -157,3 +157,63 @@ int main()
 }
 
 */
+/*
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+ll mod = 1000000007, oo = 1000000009;
+
+void Emsawy() {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+}
+#define V	         vector
+const ll N = (1 << 18);
+int n, m, k, w;
+int v[N], poL[N], poR[N];
+
+int main() {
+
+	Emsawy();
+	while (cin >> n) {
+		if (n == 0)
+			break;
+		for (int i = 0; i < n; i++) {
+			cin >> v[i];
+		}
+		stack<int> st;
+		st.push(-1);
+		for (int i = 0; i < n; i++) {
+			while (!st.empty() && (st.top() == -1? 0: v[st.top()] >= v[i]))
+				st.pop();
+			poL[i] = st.top();
+			st.push(i);
+		}
+		stack<int> st0;
+		st0.push(n);
+		for (int i = n - 1; i >= 0; i--) {
+			while (!st0.empty() && (st0.top() == n? 0: v[st0.top()] >= v[i]))
+				st0.pop();
+			poR[i] = st0.top();
+			st0.push(i);
+		}
+		ll ans = 0;
+		for (int i = 0; i < n; i++) {
+			poL[i]++,poR[i]--;
+			ans = max(ans, v[i] * 1LL * (poR[i] - poL[i] + 1));
+		}
+		cout << ans << endl;
+
+
+	}
+
+	return 0;
+}
+
+*/

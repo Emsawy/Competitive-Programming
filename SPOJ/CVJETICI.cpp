@@ -63,3 +63,67 @@ int main() {
 
 	return 0;
 }
+
+/*
+#include <bits/stdc++.h>
+
+using namespace std;
+
+typedef long long ll;
+ll mod = 1000000007, oo = 1000000009;
+
+void Emsawy() {
+#ifndef ONLINE_JUDGE
+	freopen("input.txt", "r", stdin);
+#endif
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout.tie(0);
+}
+#define V	         vector
+const ll N = (1 << 18);
+int n, m, k, w;
+
+const int MAX = (1<<17);
+
+int cnt[MAX];
+int tr[MAX];
+int l, r;
+
+int get(int idx){
+    ++idx;
+    int res = 0;
+    while(idx){
+        res += tr[idx-1];
+        idx -= (idx&-idx);
+    }
+    return res;
+}
+
+void add(int idx, int val){
+    ++idx;
+    while(idx<=MAX){
+        tr[idx-1] += val;
+        idx += (idx&-idx);
+    }
+}
+
+int main() {
+
+	Emsawy();
+	while (cin >> n) {
+		for (int i = 0; i < n; i++) {
+			cin>>l>>r;
+			int q1 = get(l), q2 = get(r);
+			cout<<q1 + q2 - cnt[l] - cnt[r]<<endl;
+			cnt[l] = q1;
+			cnt[r] = q2;
+			add(l + 1, 1);
+			add(r, -1);
+		}
+	}
+
+	return 0;
+}
+
+*/

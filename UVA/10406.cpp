@@ -1,7 +1,7 @@
 /*
 
 I get the internal polygon after cutting with the trip size,
-First, beside the mid point for every three point I get the internal new point after cutting with the trip size.
+First, beside the med point for every three point I get the internal new point after cutting with the trip size.
 example:
 	Point a,b,c in the polygon, after cutting will apear a new internal point (P) beside the point b (with get_point(a,b,c) function in my code).
 	Vector (a,b) will make a another paralle internal vector(a',b') above vector(a,b) and distance (d) between the two vectors.

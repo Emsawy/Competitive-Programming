@@ -1,3 +1,24 @@
+/*
+
+I get the internal polygon after cutting with the trip size,
+First, beside the mid point for every three point I get the internal new point after cutting with the trip size.
+example:
+	Point a,b,c in the polygon, after cutting will apear a new internal point (P) beside the point b (with get_point(a,b,c) function in my code).
+	Vector (a,b) will make a another paralle internal vector(a',b') above vector(a,b) and distance (d) between the two vectors.
+aslo 	Vector (b,c) will make a another paralle internal vector(b',c') above vector(b,c) and distance (d) between the two vectors.
+	After that i get the intersection point of the vector (a',b') and vector (b',c') to get the point (P).
+	The new polyon after cutting will be the points (P) connected.
+
+	The preprocessing to get the vector (a',b') for vector(a,b)
+		The function get_vetical_up_line(a,b) return a point with distance d away from the vector(a,b) and it's side for the vector(a,b) must be negative to ensure that the returned point will be inside the polygon.
+		Now i can get the vector(a',b') with get_vetical_up_line(a,b) + vec(a,b).
+		So now i have two vectors (a',b') and (b',c') inside the polygon for every three point in the polygon (a,b,c) and i can get their intersection(P).
+		Then calculating the inside plygon area with polygonArea() function.
+
+Note: i used the angleCMP to sort the polygon point in CW oreder to insure the every theree point is connected.
+
+*/
+
 #define _CRT_SECURE_NO_WARNINGS
 #include <bits/stdc++.h>
 

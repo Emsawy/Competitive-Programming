@@ -50,7 +50,7 @@ ll n, m, t, a, d;
 
 ll gcd(ll a, ll b){
 	if (a == 0) return b;
-	gcd(b  %a, a);
+	return gcd(b % a, a);
 }
 
 ll lcm(ll a, ll b){

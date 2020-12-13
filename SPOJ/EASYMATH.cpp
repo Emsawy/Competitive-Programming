@@ -50,13 +50,13 @@ ll n, m, t, a, d;
 
 ll gcd(ll a, ll b){
 	if (a == 0) return b;
-	gcd(b  %a, a);
+	return gcd(b % a, a);
 }
 
 ll lcm(ll a, ll b){
 	return (a*b) / gcd(a, b);
 }
-int ar[4];
+int ar[5];
 ll go(int id, int cnt, ll me, ll upto){
 	if (id == 5){
 		if (cnt % 2) return - me / upto;
